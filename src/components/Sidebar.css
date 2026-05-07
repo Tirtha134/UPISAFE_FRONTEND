@@ -1,0 +1,106 @@
+/* ===== SIDEBAR ===== */
+.sidebar {
+  width: 80px;
+  height: 100vh;
+
+  position: fixed; 
+  top: 60px;
+  left: 0;
+
+  background: #020617;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 20px;
+
+  z-index: 500;
+}
+
+/* ===== EXPANDED ===== */
+.sidebar.extended {
+  width: 200px;
+  align-items: flex-start;
+  padding-left: 15px;
+}
+
+/* ===== MENU BUTTON ===== */
+.menu-container {
+  width: 35px;
+  height: 35px;
+  background: #9b8f8f;
+  border-radius: 6px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 25px;
+  cursor: pointer;
+}
+
+/* ===== MENU ICON ===== */
+.menu-icon {
+  width: 18px;
+}
+
+/* ===== NAV ===== */
+.nav {
+  width: 100%;
+}
+
+/* ===== MENU ITEM ===== */
+.menu-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 12px;
+  padding: 14px 10px;
+  margin-bottom: 8px;
+
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+/* expanded alignment */
+.sidebar.extended .menu-item {
+  justify-content: flex-start;
+}
+
+/* ===== ICON ===== */
+.icon {
+  font-size: 24px;
+}
+
+/* ===== TEXT ===== */
+.menu-item p {
+  font-size: 15px;
+  color: #e2e8f0;
+}
+
+/* ===== HOVER ===== */
+.menu-item:hover {
+  background: #1e293b;
+}
+
+/* ===== ACTIVE ===== */
+.menu-item.active {
+  background: #38bdf8;
+  color: #020617;
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 480px) {
+  .sidebar {
+    width: 0;
+    overflow: hidden;
+  }
+
+  .sidebar.extended {
+    width: 200px;
+    z-index: 1000;
+  }
+}
