@@ -93,7 +93,7 @@
 }
 
 /* ================= RESPONSIVE ================= */
-@media (max-width: 480px) {
+@media (max-width: 330px) {
   .sidebar {
     width: 0;
     overflow: hidden;
