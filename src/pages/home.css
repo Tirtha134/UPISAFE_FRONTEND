@@ -143,7 +143,7 @@ body {
 .card-btn:active { transform: scale(0.94); }
 
 /* ===== RESPONSIVE ===== */
-@media (max-width: 650px) {
+@media (max-width: 480px) {
   .main            { margin-left: 0; padding: 30px 20px; }
   .dashboard-cards { flex-direction: column; align-items: center; gap: 25px; }
 }
