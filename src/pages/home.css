@@ -143,7 +143,7 @@ body {
 .card-btn:active { transform: scale(0.94); }
 
 /* ===== RESPONSIVE ===== */
-@media (max-width: 480px) {
+@media (max-width: 330px) {
   .main            { margin-left: 0; padding: 30px 20px; }
   .dashboard-cards { flex-direction: column; align-items: center; gap: 25px; }
 }
@@ -339,7 +339,7 @@ body {
 }
 
 /* BAR CHART MOBILE */
-@media (max-width: 480px) {
+@media (max-width: 330px) {
   .image-style-chart-box { max-width: 100%; padding: 14px 10px; }
   .chart-main-title      { font-size: 21px; }
   .chart-sub-title       { font-size: 12px; }
@@ -418,7 +418,7 @@ body {
 .fraud-dot { background: #ef6a5b; }
 
 /* PIE CHART MOBILE */
-@media (max-width: 480px) {
+@media (max-width: 330px) {
   .pie-chart-box { max-width: 100%; padding: 14px 10px; }
   .pie-legend    { gap: 16px; flex-wrap: wrap; }
 }
