@@ -30,11 +30,11 @@ const Home = () => {
   const text = "User Dashboard";
 
   const [displayText, setDisplayText] = useState("");
-  const [total, setTotal]   = useState(0);
-  const [safe,  setSafe]    = useState(0);
-  const [fraud, setFraud]   = useState(0);
+  const [total, setTotal] = useState(0);
+  const [safe, setSafe] = useState(0);
+  const [fraud, setFraud] = useState(0);
   const [animTotal, setAnimTotal] = useState(0);
-  const [animSafe,  setAnimSafe]  = useState(0);
+  const [animSafe, setAnimSafe] = useState(0);
   const [animFraud, setAnimFraud] = useState(0);
   const [chartData, setChartData] = useState([]);
 
@@ -50,45 +50,86 @@ const Home = () => {
   }, []);
 
   /* ================= FETCH DATA ================= */
+
   useEffect(() => {
     const fetchData = async () => {
       try {
+
+        if (!API) {
+          console.log("API URL Missing");
+          toast.error("Backend URL not configured");
+          return;
+        }
+
         const res = await axios.get(
           `${API}/api/transactions/all`,
-          { withCredentials: true }
+          {
+            withCredentials: true,
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
         );
-        const data = res.data || [];
+
+        const data = Array.isArray(res.data) ? res.data : [];
 
         const totalCount = data.length;
-        const safeCount  = data.filter((x) => !x.Fraud_Result).length;
-        const fraudCount = data.filter((x) =>  x.Fraud_Result).length;
+
+        const safeCount = data.filter(
+          (x) => !x.Fraud_Result
+        ).length;
+
+        const fraudCount = data.filter(
+          (x) => x.Fraud_Result
+        ).length;
 
         setTotal(totalCount);
-        setSafe(totalCount  ? Math.round((safeCount  / totalCount) * 100) : 0);
-        setFraud(totalCount ? Math.round((fraudCount / totalCount) * 100) : 0);
 
-        const latest    = data.slice(0, 10);
+        setSafe(
+          totalCount
+            ? Math.round((safeCount / totalCount) * 100)
+            : 0
+        );
+
+        setFraud(
+          totalCount
+            ? Math.round((fraudCount / totalCount) * 100)
+            : 0
+        );
+
+        const latest = data.slice(0, 10);
+
         const formatted = latest.map((item, index) => ({
-          id:     index + 1,
-          amount: Number(item.amount),
+          id: index + 1,
+          amount: Number(item.amount || 0),
           status: item.Fraud_Result ? "Fraud" : "Safe",
         }));
+
         setChartData(formatted);
+
       } catch (error) {
-        console.log(error);
-        toast.error("Failed to load transaction data.", {
-          position: "top-right",
-          autoClose: 3000,
-          theme: "colored",
-        });
+
+        console.log("FETCH ERROR:", error);
+
+        toast.error(
+          error?.response?.data?.message ||
+          "Failed to load transaction data.",
+          {
+            position: "top-right",
+            autoClose: 3000,
+            theme: "colored",
+          }
+        );
       }
     };
 
     fetchData();
-    const refresh = setInterval(fetchData, 2000);
-    return () => clearInterval(refresh);
-  }, []);
 
+    const refresh = setInterval(fetchData, 5000);
+
+    return () => clearInterval(refresh);
+
+  }, []);
   /* ================= NUMBER ANIMATION ================= */
   useEffect(() => {
     const animate = (setter, target) => {
@@ -100,7 +141,7 @@ const Home = () => {
       }, 30);
     };
     animate(setAnimTotal, total);
-    animate(setAnimSafe,  safe);
+    animate(setAnimSafe, safe);
     animate(setAnimFraud, fraud);
   }, [total, safe, fraud]);
 
@@ -139,14 +180,14 @@ const Home = () => {
     <div className="no-data-state">
       <div className="no-data-icon">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="72" height="72" fill="none">
-          <rect x="10" y="4" width="44" height="54" rx="5" ry="5" fill="#dbeafe" stroke="#93c5fd" strokeWidth="2"/>
-          <path d="M10 54 l5-5 5 5 5-5 5 5 5-5 5 5 5-5 5 5 4-5" stroke="#3b82f6" strokeWidth="2" fill="none" strokeLinecap="round"/>
-          <line x1="20" y1="18" x2="44" y2="18" stroke="#93c5fd" strokeWidth="2.5" strokeLinecap="round"/>
-          <line x1="20" y1="27" x2="44" y2="27" stroke="#93c5fd" strokeWidth="2.5" strokeLinecap="round"/>
-          <line x1="20" y1="36" x2="35" y2="36" stroke="#93c5fd" strokeWidth="2.5" strokeLinecap="round"/>
-          <circle cx="32" cy="32" r="18" fill="rgba(219,234,254,0.5)" stroke="none"/>
-          <circle cx="30" cy="30" r="10" fill="none" stroke="#3b82f6" strokeWidth="2.5"/>
-          <line x1="37.5" y1="37.5" x2="44" y2="44" stroke="#3b82f6" strokeWidth="2.5" strokeLinecap="round"/>
+          <rect x="10" y="4" width="44" height="54" rx="5" ry="5" fill="#dbeafe" stroke="#93c5fd" strokeWidth="2" />
+          <path d="M10 54 l5-5 5 5 5-5 5 5 5-5 5 5 5-5 5 5 4-5" stroke="#3b82f6" strokeWidth="2" fill="none" strokeLinecap="round" />
+          <line x1="20" y1="18" x2="44" y2="18" stroke="#93c5fd" strokeWidth="2.5" strokeLinecap="round" />
+          <line x1="20" y1="27" x2="44" y2="27" stroke="#93c5fd" strokeWidth="2.5" strokeLinecap="round" />
+          <line x1="20" y1="36" x2="35" y2="36" stroke="#93c5fd" strokeWidth="2.5" strokeLinecap="round" />
+          <circle cx="32" cy="32" r="18" fill="rgba(219,234,254,0.5)" stroke="none" />
+          <circle cx="30" cy="30" r="10" fill="none" stroke="#3b82f6" strokeWidth="2.5" />
+          <line x1="37.5" y1="37.5" x2="44" y2="44" stroke="#3b82f6" strokeWidth="2.5" strokeLinecap="round" />
         </svg>
       </div>
       <p className="no-data-title">No Transactions Found Yet</p>
@@ -247,20 +288,20 @@ const Home = () => {
                     />
                     <YAxis
                       width={62}
-                      ticks={[0,10000,20000,30000,40000,50000,60000,70000,80000,90000,100000]}
+                      ticks={[0, 10000, 20000, 30000, 40000, 50000, 60000, 70000, 80000, 90000, 100000]}
                       domain={[0, 100000]}
                       axisLine={{ stroke: "#000", strokeWidth: 1.5 }}
                       tickLine={false}
                       tick={{ fill: "#111827", fontSize: 11, fontWeight: 700 }}
                       tickFormatter={(v) => {
-                        if (v === 0)      return "0";
+                        if (v === 0) return "0";
                         if (v === 100000) return "1L+";
                         return `${v / 1000}K`;
                       }}
                       label={{ value: "Payment (₹)", angle: -90, position: "insideLeft", style: { fill: "#111827", fontWeight: 700 } }}
                     />
                     <Tooltip content={<CustomTooltip />} />
-                    <Bar dataKey="amount" barSize={42} radius={[6,6,0,0]} animationDuration={500}>
+                    <Bar dataKey="amount" barSize={42} radius={[6, 6, 0, 0]} animationDuration={500}>
                       {chartData.map((item, index) => (
                         <Cell key={index} fill={item.status === "Fraud" ? "#ef6a5b" : "#5aa0d3"} />
                       ))}
@@ -295,7 +336,7 @@ const Home = () => {
                   <PieChart margin={{ top: 20, right: 60, bottom: 20, left: 60 }}>
                     <Pie
                       data={[
-                        { name: "Safe",  value: safe  },
+                        { name: "Safe", value: safe },
                         { name: "Fraud", value: fraud },
                       ]}
                       cx="50%"
