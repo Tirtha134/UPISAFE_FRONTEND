@@ -13,9 +13,18 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [splashVisible, setSplashVisible] = useState(true);
+  const [splashFading, setSplashFading] = useState(false);
 
   const navigate = useNavigate();
   const { login } = useAuth();
+
+  /* ===== SPLASH TIMER ===== */
+  useEffect(() => {
+    const fadeTimer = setTimeout(() => setSplashFading(true), 2400);
+    const hideTimer = setTimeout(() => setSplashVisible(false), 2900);
+    return () => { clearTimeout(fadeTimer); clearTimeout(hideTimer); };
+  }, []);
 
   /* ===== SHOW LOGOUT TOAST ===== */
   useEffect(() => {
@@ -66,6 +75,18 @@ const Login = () => {
 
   return (
     <>
+      {/* ===== SPLASH LOADING SCREEN ===== */}
+      {splashVisible && (
+        <div className={`splash-screen${splashFading ? " splash-fade-out" : ""}`}>
+          <div className="splash-text-wrap">
+            <span className="splash-word">Loading</span>
+            <span className="splash-dot splash-dot-1">.</span>
+            <span className="splash-dot splash-dot-2">.</span>
+            <span className="splash-dot splash-dot-3">.</span>
+          </div>
+        </div>
+      )}
+
       <ToastContainer
         position="top-right"
         autoClose={3000}
@@ -78,7 +99,7 @@ const Login = () => {
         theme="colored"
       />
 
-      <div className="login-container">
+      <div className={`login-container${splashVisible && !splashFading ? " login-hidden" : " login-reveal"}`}>
         <div className="login-box">
 
           <img src="/profile.png" alt="profile" className="profile-img" />
