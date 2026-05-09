@@ -98,64 +98,134 @@ const Transaction = () => {
         <Sidebar />
 
         <div className="transaction-main">
-
           <div className="transaction-card">
+
+            {/* ── TITLE (unchanged) ── */}
             <h2 className="card-title">Transaction Prediction</h2>
             <p className="card-subtitle">Check whether your transaction is Safe or Fraud</p>
 
-            <input
-              name="upi_id"
-              value={form.upi_id}
-              onChange={handleChange}
-              placeholder="UPI ID"
-            />
+            {/* ══════════════════════════════════
+                INPUT SECTION  — redesigned
+            ══════════════════════════════════ */}
 
-            <input
-              name="amount"
-              type="number"
-              value={form.amount}
-              onChange={handleChange}
-              placeholder="Amount"
-            />
+            {/* UPI ID */}
+            <div className="field-group">
+              <label className="field-label">UPI ID</label>
+              <div className="field-box">
+                <span className="field-prefix">💳</span>
+                <input
+                  className="field-input"
+                  name="upi_id"
+                  type="text"
+                  value={form.upi_id}
+                  onChange={handleChange}
+                  placeholder="e.g. user@okicici"
+                  autoComplete="off"
+                  inputMode="email"
+                />
+              </div>
+            </div>
 
-            <input
-              name="date"
-              type="date"
-              value={form.date}
-              onChange={handleChange}
-            />
+            {/* Amount */}
+            <div className="field-group">
+              <label className="field-label">Amount (₹)</label>
+              <div className="field-box">
+                <span className="field-prefix">₹</span>
+                <input
+                  className="field-input"
+                  name="amount"
+                  type="number"
+                  value={form.amount}
+                  onChange={handleChange}
+                  placeholder="Enter amount"
+                  inputMode="numeric"
+                  min="1"
+                />
+              </div>
+            </div>
 
-            <input
-              name="time"
-              type="time"
-              value={form.time}
-              onChange={handleChange}
-            />
+            {/* Date + Time — side by side */}
+            <div className="field-row">
+              <div className="field-group">
+                <label className="field-label">Date</label>
+                <div className="field-box">
+                  <span className="field-prefix">📅</span>
+                  <input
+                    className="field-input"
+                    name="date"
+                    type="date"
+                    value={form.date}
+                    onChange={handleChange}
+                  />
+                </div>
+              </div>
 
-            <select name="type" value={form.type} onChange={handleChange}>
-              <option value="">Select Type</option>
-              <option value="PAYMENT">Payment</option>
-              <option value="RECEIVED">Received</option>
-            </select>
+              <div className="field-group">
+                <label className="field-label">Time</label>
+                <div className="field-box">
+                  <span className="field-prefix">🕐</span>
+                  <input
+                    className="field-input"
+                    name="time"
+                    type="time"
+                    value={form.time}
+                    onChange={handleChange}
+                  />
+                </div>
+              </div>
+            </div>
 
+            {/* Type */}
+            <div className="field-group">
+              <label className="field-label">Transaction Type</label>
+              <div className="field-box">
+                <span className="field-prefix">🔁</span>
+                <select
+                  className="field-input field-select"
+                  name="type"
+                  value={form.type}
+                  onChange={handleChange}
+                >
+                  <option value="">Select Type</option>
+                  <option value="PAYMENT">Payment</option>
+                  <option value="RECEIVED">Received</option>
+                </select>
+              </div>
+            </div>
+
+            {/* ══════════════════════════════════
+                BUTTON SECTION — redesigned
+            ══════════════════════════════════ */}
             <div className="btn-group">
-              <button className="check-btn" onClick={handleSubmit}>
-                {loading ? "Checking..." : "Check Fraud"}
+              <button
+                className="check-btn"
+                onClick={handleSubmit}
+                disabled={loading}
+              >
+                {loading ? (
+                  <span className="btn-inner">
+                    <span className="btn-spinner" />
+                    Checking...
+                  </span>
+                ) : (
+                  <span className="btn-inner">🔍 Check Fraud</span>
+                )}
               </button>
 
               <button className="clear-btn" onClick={handleClear}>
-                Clear
+                🗑 Clear
               </button>
             </div>
 
             <button className="back-btn" onClick={() => navigate("/home")}>
-              Back to Dashboard
+              ← Back to Dashboard
             </button>
+
           </div>
         </div>
       </div>
 
-      {/* ===== POPUP ===== */}
+      {/* ===== POPUP — completely unchanged ===== */}
       {showPopup && result && (
         <div className="popup-overlay" onClick={() => setShowPopup(false)}>
           <div className="popup-box small" onClick={(e) => e.stopPropagation()}>
