@@ -1,0 +1,357 @@
+/* =========================
+   GLOBAL RESET
+========================= */
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', 'Outfit', sans-serif;
+}
+
+html,
+body {
+  height: 100%;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+/* =========================
+   BACKGROUND
+========================= */
+
+body {
+  min-height: 100vh;
+  background: url("/bg1.jpg") no-repeat center center fixed;
+  background-size: cover;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 20, 40, 0.45);
+  z-index: -1;
+}
+
+/* =========================
+   PAGE WRAPPER
+========================= */
+
+.history-page {
+  min-height: 100vh;
+}
+
+/* =========================
+   LAYOUT
+========================= */
+
+.layout {
+  display: flex;
+}
+
+/* =========================
+   MAIN CONTAINER
+========================= */
+
+.history-main {
+  flex: 1;
+  margin-left: 80px;
+
+  padding: 100px 40px 60px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  min-height: 100vh;
+}
+
+/* =========================
+   TOP BAR
+========================= */
+
+.history-top-bar {
+  width: 100%;
+  max-width: 1300px;
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 20px;
+}
+
+/* =========================
+   BACK BUTTON
+========================= */
+
+.history-back-btn {
+  background: #2563eb;
+  color: #fff;
+
+  padding: 8px 20px;
+  border-radius: 20px;
+  border: none;
+
+  cursor: pointer;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  transition: 0.25s;
+}
+
+.history-back-btn:hover {
+  background: #1d4ed8;
+  transform: scale(1.05);
+}
+
+/* =========================
+   TITLE (NO WEBKIT FIX)
+========================= */
+
+.history-title {
+  font-size: 34px;
+  font-weight: 800;
+  margin-bottom: 30px;
+  text-align: center;
+
+  color: #1e3a8a; /* fallback solid color */
+}
+
+/* =========================
+   EMPTY STATE
+========================= */
+
+.history-empty {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  gap: 10px;
+  padding: 60px 0;
+
+  color: #94a3b8;
+}
+
+.history-empty-icon {
+  font-size: 48px;
+}
+
+.history-empty p {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+/* =========================
+   GRID
+========================= */
+
+.history-list {
+  width: 100%;
+  max-width: 1300px;
+
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+
+/* =========================
+   CARD
+========================= */
+
+.history-card {
+  background: rgba(255, 255, 255, 0.96);
+
+  padding: 20px;
+  border-radius: 18px;
+
+  box-shadow: 0 8px 24px rgba(0,0,0,0.09);
+
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  min-height: 200px;
+
+  transition: 0.3s;
+}
+
+.history-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 18px 40px rgba(0,0,0,0.16);
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.history-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.history-type {
+  font-size: 15px;
+  font-weight: 700;
+  color: #0f172a;
+  text-transform: capitalize;
+}
+
+/* =========================
+   BADGES
+========================= */
+
+.badge {
+  font-size: 12px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+
+.badge.fraud {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.badge.safe {
+  background: #dcfce7;
+  color: #16a34a;
+}
+
+/* =========================
+   DETAILS
+========================= */
+
+.history-details {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.history-details p {
+  font-size: 13px;
+  color: #1e293b;
+
+  display: flex;
+  justify-content: space-between;
+}
+
+.label {
+  font-weight: 600;
+  color: #64748b;
+}
+
+.value {
+  color: #0f172a;
+  text-align: right;
+  word-break: break-all;
+}
+
+.value.amt {
+  font-weight: 700;
+  color: #2563eb;
+}
+
+/* =========================
+   RISK BAR
+========================= */
+
+.history-risk-box {
+  height: 8px;
+  background: #e5e7eb;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.history-risk-bar {
+  height: 100%;
+  border-radius: 10px;
+  transition: width 0.6s ease;
+}
+
+.history-risk-text {
+  font-size: 12px;
+  margin-top: 5px;
+  color: #64748b;
+}
+
+/* =========================
+   CLEAR SECTION
+========================= */
+
+.history-clear-section {
+  margin-top: 36px;
+}
+
+/* =========================
+   CLEAR BUTTON
+========================= */
+
+.history-clear-btn {
+  background: #ef4444;
+  color: #fff;
+
+  padding: 10px 26px;
+  border-radius: 20px;
+  border: none;
+
+  cursor: pointer;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  transition: 0.25s;
+}
+
+.history-clear-btn:hover {
+  background: #dc2626;
+  transform: scale(1.05);
+}
+
+/* =========================
+   RESPONSIVE DESIGN
+========================= */
+
+/* LARGE TABLET */
+@media (max-width: 1200px) {
+  .history-list {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* TABLET */
+@media (max-width: 900px) {
+  .history-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .history-main {
+    margin-left: 70px;
+  }
+}
+
+/* MOBILE */
+@media (max-width: 480px) {
+  .history-main {
+    margin-left: 65px;
+    padding: 90px 16px 40px;
+  }
+
+  .history-title {
+    font-size: 26px;
+  }
+
+  .history-list {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* EXTRA SMALL */
+@media (max-width: 330px) {
+  .history-main {
+    margin-left: 58px;
+  }
+}

@@ -1,0 +1,214 @@
+/* =========================
+   SIDEBAR
+========================= */
+
+.sidebar {
+  width: 80px;
+  height: calc(100vh - 65px);
+
+  position: fixed;
+  top: 65px;
+  left: 0;
+
+  background: #020617;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  padding-top: 20px;
+
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  transition: 0.3s ease;
+
+  z-index: 999;
+}
+
+/* ===== EXPANDED ===== */
+
+.sidebar.extended {
+  width: 200px;
+
+  align-items: flex-start;
+
+  padding-left: 15px;
+}
+
+/* ===== MENU BUTTON ===== */
+
+.menu-container {
+  width: 35px;
+  height: 35px;
+
+  background: #9b8f8f;
+
+  border-radius: 6px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 25px;
+
+  cursor: pointer;
+
+  transition: 0.2s;
+}
+
+/* ===== MENU ICON ===== */
+
+.menu-icon {
+  width: 18px;
+}
+
+/* ===== NAV ===== */
+
+.nav {
+  width: 100%;
+}
+
+/* ===== MENU ITEM ===== */
+
+.menu-item {
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 12px;
+
+  padding: 14px 10px;
+  margin-bottom: 8px;
+
+  border-radius: 8px;
+
+  cursor: pointer;
+
+  transition: 0.2s;
+
+  box-sizing: border-box;
+}
+
+/* ===== EXPANDED ALIGN ===== */
+
+.sidebar.extended .menu-item {
+  justify-content: flex-start;
+}
+
+/* ===== ICON ===== */
+
+.icon {
+  font-size: 24px;
+  color: #e2e8f0;
+  min-width: 24px;
+}
+
+/* ===== TEXT ===== */
+
+.menu-item p {
+  font-size: 15px;
+  color: #e2e8f0;
+  margin: 0;
+
+  white-space: nowrap;
+}
+
+/* ===== HOVER ===== */
+
+.menu-item:hover {
+  background: #1e293b;
+}
+
+/* ===== ACTIVE ===== */
+
+.menu-item.active {
+  background: #38bdf8;
+}
+
+.menu-item.active p,
+.menu-item.active .icon {
+  color: #020617;
+}
+
+/* =========================
+   TABLET
+========================= */
+
+@media (max-width: 768px) {
+  .sidebar {
+    width: 70px;
+  }
+
+  .sidebar.extended {
+    width: 190px;
+  }
+
+  .icon {
+    font-size: 22px;
+  }
+
+  .menu-item p {
+    font-size: 14px;
+  }
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 480px) {
+  .sidebar {
+    width: 65px;
+
+    top: 55px;
+    height: calc(100vh - 55px);
+
+    padding-top: 15px;
+  }
+
+  .sidebar.extended {
+    width: 180px;
+  }
+
+  .menu-container {
+    width: 32px;
+    height: 32px;
+  }
+
+  .menu-item {
+    padding: 12px 8px;
+  }
+
+  .icon {
+    font-size: 20px;
+  }
+
+  .menu-item p {
+    font-size: 13px;
+  }
+}
+
+/* =========================
+   EXTRA SMALL
+========================= */
+
+@media (max-width: 330px) {
+  .sidebar {
+    width: 58px;
+  }
+
+  .sidebar.extended {
+    width: 165px;
+  }
+
+  .icon {
+    font-size: 18px;
+  }
+
+  .menu-item p {
+    font-size: 12px;
+  }
+}
