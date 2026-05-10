@@ -153,3 +153,206 @@
     font-size: 11px;
   }
 }
+
+
+/* =========================
+   LOGOUT CONFIRMATION CARD
+========================= */
+
+.logout-overlay {
+  position: fixed;
+  inset: 0;
+
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  z-index: 2000;
+
+  animation: overlayFadeIn 0.2s ease forwards;
+}
+
+@keyframes overlayFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ── Card ── */
+
+.logout-card {
+  width: min(420px, 90vw);
+
+  background: linear-gradient(160deg, #1e293b, #0f172a);
+
+  border: 1px solid rgba(56, 189, 248, 0.18);
+  border-radius: 20px;
+
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.45),
+    0 0 0 1px rgba(255, 255, 255, 0.04) inset;
+
+  padding: 40px 36px 32px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+
+  animation: cardSlideUp 0.25s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes cardSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ── Icon ── */
+
+.logout-card__icon {
+  width: 64px;
+  height: 64px;
+
+  border-radius: 50%;
+
+  background: rgba(239, 68, 68, 0.12);
+  border: 1.5px solid rgba(239, 68, 68, 0.35);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 20px;
+
+  color: #f87171;
+}
+
+.logout-card__icon svg {
+  width: 30px;
+  height: 30px;
+}
+
+/* ── Title ── */
+
+.logout-card__title {
+  font-size: 22px;
+  font-weight: 700;
+
+  color: #f1f5f9;
+
+  margin: 0 0 8px;
+
+  letter-spacing: 0.3px;
+}
+
+/* ── Subtitle ── */
+
+.logout-card__subtitle {
+  font-size: 14px;
+
+  color: #94a3b8;
+
+  margin: 0 0 32px;
+
+  line-height: 1.5;
+}
+
+/* ── Action buttons ── */
+
+.logout-card__actions {
+  display: flex;
+  gap: 12px;
+
+  width: 100%;
+}
+
+.logout-card__btn {
+  flex: 1;
+
+  padding: 11px 0;
+
+  border-radius: 12px;
+  border: none;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: transform 0.18s, background 0.18s, box-shadow 0.18s;
+}
+
+.logout-card__btn:active {
+  transform: scale(0.97);
+}
+
+/* Cancel (No) */
+
+.logout-card__btn--cancel {
+  background: rgba(255, 255, 255, 0.07);
+  color: #cbd5e1;
+
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.logout-card__btn--cancel:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #f1f5f9;
+}
+
+/* Confirm (Yes) */
+
+.logout-card__btn--confirm {
+  background: #ef4444;
+  color: #fff;
+
+  box-shadow: 0 4px 14px rgba(239, 68, 68, 0.35);
+}
+
+.logout-card__btn--confirm:hover {
+  background: #dc2626;
+  box-shadow: 0 4px 18px rgba(239, 68, 68, 0.5);
+}
+
+/* =========================
+   CARD MOBILE
+========================= */
+
+@media (max-width: 480px) {
+  .logout-card {
+    padding: 32px 22px 26px;
+  }
+
+  .logout-card__icon {
+    width: 54px;
+    height: 54px;
+  }
+
+  .logout-card__icon svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  .logout-card__title {
+    font-size: 19px;
+  }
+
+  .logout-card__subtitle {
+    font-size: 13px;
+    margin-bottom: 26px;
+  }
+
+  .logout-card__btn {
+    padding: 10px 0;
+    font-size: 13px;
+  }
+}
