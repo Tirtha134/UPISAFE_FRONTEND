@@ -6,6 +6,8 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useAuth } from "../context/ContextProvider";
 
+const API = import.meta.env.VITE_API_BASE_URL;
+
 const Login = () => {
   const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
@@ -47,7 +49,7 @@ const Login = () => {
       setLoading(true);
 
       const { data } = await axios.post(
-        "http://localhost:5000/api/auth/login",
+        `${API}/api/auth/login`,
         {
           identifier,
           password,
