@@ -1,0 +1,164 @@
+/* ============================================================
+   FIRSTPAGE.CSS  —  UPIsafe Landing
+   ============================================================ */
+
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap");
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  width: 100%;
+}
+
+/* ── ROOT ── */
+.fp-root {
+  min-height: 100vh;
+  min-height: 100dvh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  font-family: "DM Sans", sans-serif;
+  overflow: hidden;
+  background: linear-gradient(
+    125deg,
+    #1565c0 0%,
+    #1976d2 15%,
+    #42a5f5 42%,
+    #90caf9 62%,
+    #e3f2fd 80%,
+    #f0f8ff 100%
+  );
+}
+
+/* ── HERO ── */
+.fp-hero {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 48px 24px;
+}
+
+/* ── CONTENT ── */
+.fp-content {
+  max-width: 560px;
+  width: 100%;
+  text-align: center;
+}
+
+/* ── HEADING ── */
+.fp-heading {
+  font-family: "DM Serif Display", serif;
+  font-size: clamp(30px, 5vw, 48px);
+  font-weight: 400;
+  color: #0d1f3c;
+  line-height: 1.15;
+  margin-bottom: 14px;
+  letter-spacing: -0.5px;
+}
+
+/* ── SUBTITLE ── */
+.fp-sub {
+  font-size: clamp(14px, 2vw, 16px);
+  color: #2d4a72;
+  margin-bottom: 38px;
+  opacity: 0.9;
+}
+
+/* ── BUTTONS ── */
+.fp-btns {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  margin-bottom: 28px;
+}
+
+.fp-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 130px;
+  padding: 13px 38px;
+  border-radius: 50px;
+  font-family: "DM Sans", sans-serif;
+  font-size: 15.5px;
+  font-weight: 600;
+  text-decoration: none;
+  letter-spacing: 0.2px;
+  cursor: pointer;
+  border: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.fp-btn-login {
+  background: #0d47a1;
+  color: #fff;
+  box-shadow: 0 6px 22px rgba(13, 71, 161, 0.42);
+}
+.fp-btn-login:hover {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 10px 30px rgba(13, 71, 161, 0.55);
+  background: #0a3d91;
+}
+.fp-btn-login:active { transform: scale(0.97); }
+
+.fp-btn-register {
+  background: #00bfa5;
+  color: #fff;
+  box-shadow: 0 6px 22px rgba(0, 191, 165, 0.42);
+}
+.fp-btn-register:hover {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 10px 30px rgba(0, 191, 165, 0.55);
+  background: #00a896;
+}
+.fp-btn-register:active { transform: scale(0.97); }
+
+/* ── TRUST ICONS ROW ── */
+/* Zero background, zero border, zero border-radius, zero padding on icons */
+.fp-trust-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  /* no background, no border, no border-radius, no padding */
+}
+
+.fp-trust-row svg {
+  display: block;
+  opacity: 0.55;
+  /* absolutely no background, border, border-radius, outline, box-shadow */
+  background: none !important;
+  border: none !important;
+  border-radius: 0 !important;
+  outline: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+
+/* ── FOOTER ── */
+.fp-footer {
+  text-align: center;
+  padding: 16px;
+  font-size: 12.5px;
+  color: #2d4a72;
+  opacity: 0.7;
+}
+
+/* ── MOBILE ── */
+@media (max-width: 640px) {
+  .fp-hero    { padding: 40px 24px 16px; }
+  .fp-heading { font-size: 26px; }
+  .fp-sub     { font-size: 13.5px; margin-bottom: 28px; }
+  .fp-btns    { gap: 12px; margin-bottom: 22px; }
+  .fp-btn     { min-width: 110px; padding: 12px 28px; font-size: 14.5px; }
+}
