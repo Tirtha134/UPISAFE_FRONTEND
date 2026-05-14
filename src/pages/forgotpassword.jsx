@@ -5,8 +5,6 @@ import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const API = import.meta.env.VITE_API_BASE_URL;
-
 const ForgotPassword = () => {
   const [identifier, setIdentifier] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -20,14 +18,14 @@ const ForgotPassword = () => {
 
     if (!identifier || !newPassword) {
       toast.error("All fields are required ❌", {
-        position: "top-right", autoClose: 3000, theme: "colored",
+        position: "top-right", autoClose: 3000, theme: "colored"
       });
       return;
     }
 
     if (newPassword.length < 6) {
       toast.error("Password must be at least 6 characters ❌", {
-        position: "top-right", autoClose: 3000, theme: "colored",
+        position: "top-right", autoClose: 3000, theme: "colored"
       });
       return;
     }
@@ -36,23 +34,23 @@ const ForgotPassword = () => {
       setLoading(true);
 
       const { data } = await axios.post(
-        `${API}/api/auth/forgot-password`,
+        "http://localhost:5000/api/auth/forgot-password",
         { identifier, newPassword }
       );
 
       if (data.success) {
         toast.success(data.message || "Password reset successful 🎉", {
-          position: "top-right", autoClose: 3000, theme: "colored",
+          position: "top-right", autoClose: 3000, theme: "colored"
         });
 
         setIdentifier("");
         setNewPassword("");
 
-        setTimeout(() => navigate("/"), 1000);
+        setTimeout(() => navigate("/login"), 1000);
       }
     } catch (error) {
       toast.error(error.response?.data?.message || "Something went wrong ❌", {
-        position: "top-right", autoClose: 3000, theme: "colored",
+        position: "top-right", autoClose: 3000, theme: "colored"
       });
     } finally {
       setLoading(false);
