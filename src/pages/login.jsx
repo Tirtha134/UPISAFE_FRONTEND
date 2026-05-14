@@ -6,31 +6,26 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useAuth } from "../context/ContextProvider";
 
-const API = import.meta.env.VITE_API_BASE_URL;
-
 const Login = () => {
   const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [splashVisible, setSplashVisible] = useState(true);
-  const [splashFading, setSplashFading] = useState(false);
 
   const navigate = useNavigate();
   const { login } = useAuth();
 
-  /* ===== SPLASH TIMER ===== */
-  useEffect(() => {
-    const fadeTimer = setTimeout(() => setSplashFading(true), 2400);
-    const hideTimer = setTimeout(() => setSplashVisible(false), 2900);
-    return () => { clearTimeout(fadeTimer); clearTimeout(hideTimer); };
-  }, []);
-
   /* ===== SHOW LOGOUT TOAST ===== */
   useEffect(() => {
     const msg = sessionStorage.getItem("logoutMsg");
+
     if (msg) {
-      toast.success(msg, { position: "top-right", autoClose: 3000, theme: "colored" });
+      toast.success(msg, {
+        position: "top-right",
+        autoClose: 3000,
+        theme: "colored",
+      });
+
       sessionStorage.removeItem("logoutMsg");
     }
   }, []);
@@ -40,7 +35,11 @@ const Login = () => {
     e.preventDefault();
 
     if (!identifier || !password) {
-      toast.error("All fields are required ❌", { position: "top-right", autoClose: 3000, theme: "colored" });
+      toast.error("All fields are required ❌", {
+        position: "top-right",
+        autoClose: 3000,
+        theme: "colored",
+      });
       return;
     }
 
@@ -48,26 +47,41 @@ const Login = () => {
       setLoading(true);
 
       const { data } = await axios.post(
-        `${API}/api/auth/login`,
-        { identifier, password },
-        { withCredentials: true }
+        "http://localhost:5000/api/auth/login",
+        {
+          identifier,
+          password,
+        },
+        {
+          withCredentials: true,
+        }
       );
 
       if (data.success) {
         toast.success(data.message || "Login successful 🎉", {
-          position: "top-right", autoClose: 3000, theme: "colored",
+          position: "top-right",
+          autoClose: 3000,
+          theme: "colored",
         });
 
         login(data);
+
         setIdentifier("");
         setPassword("");
 
-        setTimeout(() => navigate("/home"), 800);
+        setTimeout(() => {
+          navigate("/home");
+        }, 800);
       }
     } catch (error) {
-      toast.error(error.response?.data?.message || "Invalid credentials ❌", {
-        position: "top-right", autoClose: 3000, theme: "colored",
-      });
+      toast.error(
+        error.response?.data?.message || "Invalid credentials ❌",
+        {
+          position: "top-right",
+          autoClose: 3000,
+          theme: "colored",
+        }
+      );
     } finally {
       setLoading(false);
     }
@@ -75,18 +89,7 @@ const Login = () => {
 
   return (
     <>
-      {/* ===== SPLASH LOADING SCREEN ===== */}
-      {splashVisible && (
-        <div className={`splash-screen${splashFading ? " splash-fade-out" : ""}`}>
-          <div className="splash-text-wrap">
-            <span className="splash-word">Loading</span>
-            <span className="splash-dot splash-dot-1">.</span>
-            <span className="splash-dot splash-dot-2">.</span>
-            <span className="splash-dot splash-dot-3">.</span>
-          </div>
-        </div>
-      )}
-
+      {/* ===== TOAST ===== */}
       <ToastContainer
         position="top-right"
         autoClose={3000}
@@ -99,15 +102,26 @@ const Login = () => {
         theme="colored"
       />
 
-      <div className={`login-container${splashVisible && !splashFading ? " login-hidden" : " login-reveal"}`}>
+      {/* ===== LOGIN PAGE ===== */}
+      <div className="login-container">
         <div className="login-box">
 
-          <img src="/profile.png" alt="profile" className="profile-img" />
+          {/* PROFILE IMAGE */}
+          <img
+            src="/profile.png"
+            alt="profile"
+            className="profile-img"
+          />
 
+          {/* TITLES */}
           <h2 className="title">Welcome</h2>
           <h1 className="login-title">Login</h1>
-          <p className="subtitle">Access your account to continue</p>
 
+          <p className="subtitle">
+            Access your account to continue
+          </p>
+
+          {/* FORM */}
           <form onSubmit={handleSubmit}>
 
             {/* EMAIL / PHONE */}
@@ -115,6 +129,7 @@ const Login = () => {
               <span className="input-icon">
                 <i className="ti ti-mail"></i>
               </span>
+
               <input
                 type="text"
                 placeholder="Phone No or Email"
@@ -129,6 +144,7 @@ const Login = () => {
               <span className="input-icon">
                 <i className="ti ti-lock"></i>
               </span>
+
               <input
                 type={showPassword ? "text" : "password"}
                 placeholder="Password"
@@ -136,21 +152,36 @@ const Login = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
+
+              {/* SHOW / HIDE PASSWORD */}
               <button
                 type="button"
                 className="eye-toggle"
                 onClick={() => setShowPassword(!showPassword)}
               >
-                <i className={showPassword ? "ti ti-eye-off" : "ti ti-eye"}></i>
+                <i
+                  className={
+                    showPassword
+                      ? "ti ti-eye-off"
+                      : "ti ti-eye"
+                  }
+                ></i>
               </button>
             </div>
 
             {/* FORGOT PASSWORD */}
             <div className="options">
-              <Link to="/forgot">Forgot password?</Link>
+              <Link to="/forgot">
+                Forgot password?
+              </Link>
             </div>
 
-            <button type="submit" className="login-btn" disabled={loading}>
+            {/* LOGIN BUTTON */}
+            <button
+              type="submit"
+              className="login-btn"
+              disabled={loading}
+            >
               {loading ? "Logging in..." : "LOGIN"}
             </button>
 
@@ -158,10 +189,17 @@ const Login = () => {
 
           <hr />
 
-          <p className="signup">
-            Not an Account?{" "}
-            <Link to="/signup">Click here</Link>
-          </p>
+          {/* BOTTOM ROW — back hyperlink left, signup right */}
+          <div className="bottom-row">
+            <Link to="/" className="back-link">
+              Back?
+            </Link>
+
+            <p className="signup">
+              Not an Account?{" "}
+              <Link to="/signup">Click here</Link>
+            </p>
+          </div>
 
         </div>
       </div>
