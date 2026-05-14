@@ -5,7 +5,7 @@ import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-
+const API = import.meta.env.VITE_API_BASE_URL;
 
 const Signup = () => {
 
@@ -42,7 +42,7 @@ const Signup = () => {
       setLoading(true);
 
       const res = await axios.post(
-        "http://localhost:5000/api/auth/register",
+        `${API}/api/auth/register`,
         {
           name: name.trim(),
           phone: phone.trim(),
