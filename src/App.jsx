@@ -2,7 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ContextProvider } from "./context/ContextProvider";
 
-import FirstPage from "./pages/firstpage";
+import FirstPage from "./pages/Firstpage";
 import Login from "./pages/login";
 import Signup from "./pages/signup";
 import ForgotPassword from "./pages/forgotpassword";
