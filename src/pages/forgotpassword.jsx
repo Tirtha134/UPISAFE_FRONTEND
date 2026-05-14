@@ -132,7 +132,7 @@ const ForgotPassword = () => {
           </form>
 
           <div className="back-login">
-            Remember password? <Link to="/">Login</Link>
+            Remember password? <Link to="/login">Login</Link>
           </div>
 
         </div>
