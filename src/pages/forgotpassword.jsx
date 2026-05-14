@@ -5,6 +5,8 @@ import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+const API = import.meta.env.VITE_API_BASE_URL;
+
 const ForgotPassword = () => {
   const [identifier, setIdentifier] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -34,8 +36,11 @@ const ForgotPassword = () => {
       setLoading(true);
 
       const { data } = await axios.post(
-        "http://localhost:5000/api/auth/forgot-password",
-        { identifier, newPassword }
+        `${API}/api/auth/forgot-password`,
+        { identifier, newPassword },
+        {
+          withCredentials: true,
+        }
       );
 
       if (data.success) {
