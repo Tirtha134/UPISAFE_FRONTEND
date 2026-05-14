@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ContextProvider } from "./context/ContextProvider";
 
+import FirstPage from "./pages/firstpage";
 import Login from "./pages/login";
 import Signup from "./pages/signup";
 import ForgotPassword from "./pages/forgotpassword";
@@ -18,18 +19,21 @@ const App = () => {
       <Router>
         <Routes>
 
+          {/* LANDING */}
+          <Route path="/"        element={<FirstPage />} />
+
           {/* AUTH */}
-          <Route path="/" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/forgot" element={<ForgotPassword />} />
+          <Route path="/login"   element={<Login />} />
+          <Route path="/signup"  element={<Signup />} />
+          <Route path="/forgot"  element={<ForgotPassword />} />
 
           {/* DASHBOARD */}
-          <Route path="/home" element={<Home />} />
-          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/home"        element={<Home />} />
+          <Route path="/profile"     element={<ProfilePage />} />
           <Route path="/transaction" element={<Transaction />} />
-          <Route path="/history" element={<History />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/contact" element={<Contact />} />
+          <Route path="/history"     element={<History />} />
+          <Route path="/about"       element={<About />} />
+          <Route path="/contact"     element={<Contact />} />
 
         </Routes>
       </Router>
