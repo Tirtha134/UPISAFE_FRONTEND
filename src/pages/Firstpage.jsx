@@ -1,5 +1,5 @@
 import React from "react";
-import "./firstpage.css";
+import "./Firstpage.css";
 import { Link } from "react-router-dom";
 
 const FirstPage = () => {
