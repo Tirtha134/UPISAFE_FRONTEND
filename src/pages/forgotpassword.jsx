@@ -1,89 +1,69 @@
 import React, { useState } from "react";
-import "./signup.css";
+import "./forgotpassword.css";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-
-
-const Signup = () => {
-
-  const [form, setForm] = useState({
-    name: "",
-    phone: "",
-    email: "",
-    password: ""
-  });
-
+const ForgotPassword = () => {
+  const [identifier, setIdentifier] = useState("");
+  const [newPassword, setNewPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
 
-  const handleChange = (e) => {
-    setForm({
-      ...form,
-      [e.target.name]: e.target.value
-    });
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const { name, phone, email, password } = form;
+    if (!identifier || !newPassword) {
+      toast.error("All fields are required ❌", {
+        position: "top-right", autoClose: 3000, theme: "colored"
+      });
+      return;
+    }
 
-    if (!name || !phone || !email || !password) {
-      toast.error("All fields are required ❌");
+    if (newPassword.length < 6) {
+      toast.error("Password must be at least 6 characters ❌", {
+        position: "top-right", autoClose: 3000, theme: "colored"
+      });
       return;
     }
 
     try {
       setLoading(true);
 
-      const res = await axios.post(
-        "http://localhost:5000/api/auth/register",
-        {
-          name: name.trim(),
-          phone: phone.trim(),
-          email: email.trim(),
-          password
-        },
-        {
-          withCredentials: true,
-          headers: { "Content-Type": "application/json" }
-        }
+      const { data } = await axios.post(
+        "http://localhost:5000/api/auth/forgot-password",
+        { identifier, newPassword }
       );
 
-      if (res.data.success) {
-        toast.success(res.data.message || "Account created 🎉");
-
-        setForm({
-          name: "",
-          phone: "",
-          email: "",
-          password: ""
+      if (data.success) {
+        toast.success(data.message || "Password reset successful 🎉", {
+          position: "top-right", autoClose: 3000, theme: "colored"
         });
 
-        setTimeout(() => navigate("/login"), 800);
-      }
+        setIdentifier("");
+        setNewPassword("");
 
+        setTimeout(() => navigate("/login"), 1000);
+      }
     } catch (error) {
-      toast.error(error.response?.data?.message || "Register failed ❌");
+      toast.error(error.response?.data?.message || "Something went wrong ❌", {
+        position: "top-right", autoClose: 3000, theme: "colored"
+      });
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="signup-container">
-
-      {/* ✅ ToastContainer — place once, near root of the component */}
+    <>
       <ToastContainer
         position="top-right"
         autoClose={3000}
         hideProgressBar={false}
-        newestOnTop={false}
+        newestOnTop
         closeOnClick
         rtl={false}
         pauseOnFocusLoss
@@ -92,83 +72,68 @@ const Signup = () => {
         theme="colored"
       />
 
-      <div className="signup-box">
+      <div className="forgot-container">
+        <div className="forgot-box">
 
-        <h2 className="title">Register</h2>
-        <p className="subtitle">Create your account to continue</p>
+          <img src="/reset-password.png" alt="reset" className="reset-img" />
+          <h2 className="title">Reset Password</h2>
+          <p className="subtitle">Reset your account password</p>
 
-        <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit}>
 
-          <input
-            type="text"
-            name="name"
-            placeholder="Full Name"
-            className="input-field"
-            value={form.name}
-            onChange={handleChange}
-          />
+            {/* EMAIL / PHONE INPUT */}
+            <div className="input-wrapper">
+              <span className="input-icon">
+                <i className="ti ti-mail" aria-hidden="true"></i>
+              </span>
+              <input
+                type="text"
+                placeholder="Email or Phone Number"
+                className="input-field"
+                value={identifier}
+                onChange={(e) => setIdentifier(e.target.value)}
+              />
+            </div>
 
-          <input
-            type="tel"
-            name="phone"
-            placeholder="Phone Number"
-            className="input-field"
-            value={form.phone}
-            onChange={handleChange}
-          />
+            {/* NEW PASSWORD INPUT */}
+            <div className="input-wrapper">
+              <span className="input-icon">
+                <i className="ti ti-lock" aria-hidden="true"></i>
+              </span>
+              <input
+                type={showPassword ? "text" : "password"}
+                placeholder="New Password"
+                className="input-field"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+              />
+              <button
+                type="button"
+                className="eye-toggle"
+                onClick={() => setShowPassword((p) => !p)}
+                aria-label={showPassword ? "Hide password" : "Show password"}
+              >
+                <i
+                  className={`ti ${showPassword ? "ti-eye-off" : "ti-eye"}`}
+                  aria-hidden="true"
+                ></i>
+              </button>
+            </div>
 
-          <input
-            type="email"
-            name="email"
-            placeholder="Email Address"
-            className="input-field"
-            value={form.email}
-            onChange={handleChange}
-          />
-
-          {/* PASSWORD WITH EYE TOGGLE — same pattern as ForgotPassword */}
-          <div className="input-wrapper">
-            <span className="input-icon">
-              <i className="ti ti-lock" aria-hidden="true"></i>
-            </span>
-            <input
-              type={showPassword ? "text" : "password"}
-              name="password"
-              placeholder="Password"
-              className="input-field"
-              value={form.password}
-              onChange={handleChange}
-            />
-            <button
-              type="button"
-              className="eye-toggle"
-              onClick={() => setShowPassword((p) => !p)}
-              aria-label={showPassword ? "Hide password" : "Show password"}
-            >
-              <i
-                className={`ti ${showPassword ? "ti-eye-off" : "ti-eye"}`}
-                aria-hidden="true"
-              ></i>
+            <button className="reset-btn" type="submit" disabled={loading}>
+              {loading ? "Resetting..." : "Reset Password"}
             </button>
+
+          </form>
+
+          <div className="back-login">
+            Remember password? <Link to="/">Login</Link>
           </div>
 
-          <button
-            type="submit"
-            className="signup-btn"
-            disabled={loading}
-          >
-            {loading ? "Registering..." : "Register"}
-          </button>
-
-        </form>
-
-        <div className="back-login">
-          Already have an account? <Link to="/login">Login</Link>
         </div>
-
       </div>
-    </div>
+    </>
   );
 };
 
-export default Signup;
+export default ForgotPassword;
