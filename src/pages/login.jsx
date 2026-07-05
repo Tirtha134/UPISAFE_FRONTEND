@@ -150,16 +150,17 @@ const Login = () => {
               <input
                 type={showPassword ? "text" : "password"}
                 placeholder="Password"
-                className="input-field"
+                className="input-field password-field"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
 
-              {/* SHOW / HIDE PASSWORD */}
+              {/* SHOW / HIDE PASSWORD — always visible, never hidden */}
               <button
                 type="button"
                 className="eye-toggle"
                 onClick={() => setShowPassword(!showPassword)}
+                aria-label={showPassword ? "Hide password" : "Show password"}
               >
                 <i
                   className={
