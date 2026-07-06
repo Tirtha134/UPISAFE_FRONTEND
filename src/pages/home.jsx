@@ -217,12 +217,15 @@ const Home = () => {
 
           {/* ── TITLE ── */}
           <h1 className="dashboard-title">{displayText}</h1>
+          <p className="dashboard-subtitle">Track, analyze, and stay ahead of fraud — all in one place.</p>
 
           {/* ── CARDS ── */}
           <div className="dashboard-cards">
             <div className="card">
               <div className="card-content">
-                <img src="https://cdn-icons-png.flaticon.com/512/1946/1946429.png" alt="profile" />
+                <div className="card-icon-ring">
+                  <img src="https://cdn-icons-png.flaticon.com/512/1946/1946429.png" alt="profile" />
+                </div>
                 <h2>Your Profile</h2>
                 <p>View your account details.</p>
               </div>
@@ -231,7 +234,9 @@ const Home = () => {
 
             <div className="card">
               <div className="card-content">
-                <img src="https://cdn-icons-png.flaticon.com/512/1570/1570887.png" alt="predict" />
+                <div className="card-icon-ring">
+                  <img src="https://cdn-icons-png.flaticon.com/512/1570/1570887.png" alt="predict" />
+                </div>
                 <h2>Predict Payment Status</h2>
                 <p>Check the safety of your UPI payments instantly.</p>
               </div>
@@ -240,7 +245,9 @@ const Home = () => {
 
             <div className="card">
               <div className="card-content">
-                <img src="https://cdn-icons-png.flaticon.com/512/1570/1570909.png" alt="history" />
+                <div className="card-icon-ring">
+                  <img src="https://cdn-icons-png.flaticon.com/512/1570/1570909.png" alt="history" />
+                </div>
                 <h2>Transaction History</h2>
                 <p>Review all your past transactions.</p>
               </div>
@@ -278,20 +285,30 @@ const Home = () => {
               ) : (
                 <>
                   <ResponsiveContainer width="100%" height={420}>
-                    <BarChart data={chartData} margin={{ top: 28, right: 15, left: 5, bottom: 28 }} barCategoryGap={14}>
-                      <CartesianGrid strokeDasharray="4 4" stroke="#b8b8b8" vertical={false} />
+                    <BarChart data={chartData} margin={{ top: 28, right: 15, left: 5, bottom: 28 }} barCategoryGap={18}>
+                      <defs>
+                        <linearGradient id="safeBarGradient" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="0%" stopColor="#60a5fa" stopOpacity={1} />
+                          <stop offset="100%" stopColor="#2563eb" stopOpacity={1} />
+                        </linearGradient>
+                        <linearGradient id="fraudBarGradient" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="0%" stopColor="#fb7185" stopOpacity={1} />
+                          <stop offset="100%" stopColor="#dc2626" stopOpacity={1} />
+                        </linearGradient>
+                      </defs>
+                      <CartesianGrid strokeDasharray="3 6" stroke="#cbd5e1" vertical={false} />
                       <XAxis
                         dataKey="id"
-                        axisLine={{ stroke: "#000", strokeWidth: 1.5 }}
+                        axisLine={{ stroke: "#94a3b8", strokeWidth: 1.5 }}
                         tickLine={false}
                         tick={{ fill: "#111827", fontSize: 12, fontWeight: 700 }}
-                        label={{ value: "Transaction Order(Newest to Oldest)", position: "insideBottom", offset: -10 }}
+                        label={{ value: "Transaction Order (Newest to Oldest)", position: "insideBottom", offset: -10, fill: "#334155", fontWeight: 700 }}
                       />
                       <YAxis
                         width={62}
                         ticks={[0, 10000, 20000, 30000, 40000, 50000, 60000, 70000, 80000, 90000, 100000]}
                         domain={[0, 100000]}
-                        axisLine={{ stroke: "#000", strokeWidth: 1.5 }}
+                        axisLine={{ stroke: "#94a3b8", strokeWidth: 1.5 }}
                         tickLine={false}
                         tick={{ fill: "#111827", fontSize: 11, fontWeight: 700 }}
                         tickFormatter={(v) => {
@@ -299,18 +316,23 @@ const Home = () => {
                           if (v === 100000) return "1L+";
                           return `${v / 1000}K`;
                         }}
-                        label={{ value: "Payment (₹)", angle: -90, position: "insideLeft", style: { fill: "#111827", fontWeight: 700 } }}
+                        label={{ value: "Payment (₹)", angle: -90, position: "insideLeft", style: { fill: "#334155", fontWeight: 700 } }}
                       />
-                      <Tooltip content={<CustomTooltip />} />
-                      <Bar dataKey="amount" barSize={42} radius={[6, 6, 0, 0]} animationDuration={500}>
+                      <Tooltip content={<CustomTooltip />} cursor={{ fill: "rgba(148,163,184,0.12)" }} />
+                      <Bar dataKey="amount" barSize={38} radius={[10, 10, 4, 4]} animationDuration={600}>
                         {chartData.map((item, index) => (
-                          <Cell key={index} fill={item.status === "Fraud" ? "#ef6a5b" : "#5aa0d3"} />
+                          <Cell
+                            key={index}
+                            fill={item.status === "Fraud" ? "url(#fraudBarGradient)" : "url(#safeBarGradient)"}
+                            stroke={item.status === "Fraud" ? "#b91c1c" : "#1d4ed8"}
+                            strokeWidth={0.5}
+                          />
                         ))}
                         <LabelList
                           dataKey="amount"
                           position="top"
                           formatter={(v) => `₹${Number(v).toLocaleString()}`}
-                          style={{ fill: "#111827", fontSize: 11, fontWeight: 700 }}
+                          style={{ fill: "#0f172a", fontSize: 11, fontWeight: 700 }}
                         />
                       </Bar>
                     </BarChart>
@@ -337,6 +359,16 @@ const Home = () => {
                 <>
                   <ResponsiveContainer width="100%" height={420}>
                     <PieChart margin={{ top: 20, right: 60, bottom: 20, left: 60 }}>
+                      <defs>
+                        <linearGradient id="safePieGradient" x1="0" y1="0" x2="1" y2="1">
+                          <stop offset="0%" stopColor="#60a5fa" />
+                          <stop offset="100%" stopColor="#2563eb" />
+                        </linearGradient>
+                        <linearGradient id="fraudPieGradient" x1="0" y1="0" x2="1" y2="1">
+                          <stop offset="0%" stopColor="#fb7185" />
+                          <stop offset="100%" stopColor="#dc2626" />
+                        </linearGradient>
+                      </defs>
                       <Pie
                         data={[
                           { name: "Safe", value: safe },
@@ -345,20 +377,21 @@ const Home = () => {
                         cx="50%"
                         cy="50%"
                         outerRadius={150}
-                        innerRadius={0}
+                        innerRadius={70}
                         dataKey="value"
-                        paddingAngle={2}
+                        paddingAngle={3}
                         labelLine={false}
                         label={renderInnerLabel}
-                        strokeWidth={2}
+                        strokeWidth={3}
                         stroke="#ffffff"
+                        cornerRadius={8}
                       >
-                        <Cell fill="#5aa0d3" />
-                        <Cell fill="#ef6a5b" />
+                        <Cell fill="url(#safePieGradient)" />
+                        <Cell fill="url(#fraudPieGradient)" />
                       </Pie>
                       <Tooltip
                         formatter={(value, name) => [`${value}%`, name]}
-                        contentStyle={{ borderRadius: "10px", border: "1px solid #e5e7eb", fontWeight: 700 }}
+                        contentStyle={{ borderRadius: "12px", border: "1px solid #e5e7eb", fontWeight: 700, boxShadow: "0 10px 25px rgba(0,0,0,0.12)" }}
                       />
                     </PieChart>
                   </ResponsiveContainer>
