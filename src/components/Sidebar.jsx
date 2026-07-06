@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./Sidebar.css";
 import { useLocation, useNavigate } from "react-router-dom";
+import { FaHome, FaInfoCircle, FaPhoneAlt, FaBars } from "react-icons/fa";
 
 const Sidebar = () => {
   const [extended, setExtended] = useState(false);
@@ -9,53 +10,51 @@ const Sidebar = () => {
 
   return (
     <div className={`sidebar ${extended ? "extended" : ""}`}>
-
-      {/* ===== MENU BUTTON ===== */}
+      {/* Menu Button */}
       <div
         className="menu-container"
         onClick={() => setExtended(!extended)}
       >
-        <img src="/menu_icon.png" alt="menu" className="menu-icon" />
+        <FaBars className="menu-icon" />
       </div>
 
-      {/* ===== NAV ITEMS ===== */}
+      {/* Navigation */}
       <div className="nav">
 
-        {/* HOME */}
+        {/* Home */}
         <div
           className={`menu-item ${
             location.pathname === "/home" ? "active" : ""
           }`}
           onClick={() => navigate("/home")}
         >
-          <span className="icon">🏠</span>
+          <FaHome className="icon" />
           {extended && <p>Home</p>}
         </div>
 
-        {/* ABOUT */}
+        {/* About */}
         <div
           className={`menu-item ${
             location.pathname === "/about" ? "active" : ""
           }`}
           onClick={() => navigate("/about")}
         >
-          <span className="icon">ℹ️</span>
+          <FaInfoCircle className="icon" />
           {extended && <p>About</p>}
         </div>
 
-        {/* CONTACT ✅ NEW */}
+        {/* Contact */}
         <div
           className={`menu-item ${
             location.pathname === "/contact" ? "active" : ""
           }`}
           onClick={() => navigate("/contact")}
         >
-          <span className="icon">📞</span>
+          <FaPhoneAlt className="icon" />
           {extended && <p>Contact</p>}
         </div>
 
       </div>
-
     </div>
   );
 };
