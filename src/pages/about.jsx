@@ -13,14 +13,6 @@ const About = () => {
 
   return (
     <div className="about-container">
-
-      {/* BACKGROUND ANIMATION */}
-      <div className="bg-animation">
-        <span></span>
-        <span></span>
-        <span></span>
-      </div>
-
       <Navbar />
 
       <div className="about-layout">
@@ -28,7 +20,7 @@ const About = () => {
 
         <div className="about-main">
 
-          {/* SIMPLE HEADER */}
+          {/* HEADER */}
           <h1 className="about-title">UPI Fraud Detection System</h1>
 
           {/* SHORT DESCRIPTION */}
@@ -36,13 +28,13 @@ const About = () => {
             Real-time UPI fraud detection using MERN and machine learning.
           </p>
 
-          {/* DROPDOWN (UNCHANGED) */}
+          {/* DROPDOWNS */}
           <div className="dropdown-container">
 
             <div className="dropdown-card">
               <div className="dropdown-header" onClick={() => toggleSection("mern")}>
                 🚀 MERN Stack Architecture
-                <span>{openSection === "mern" ? "▲" : "▼"}</span>
+                <span className={`chevron ${openSection === "mern" ? "open" : ""}`}>▼</span>
               </div>
 
               {openSection === "mern" && (
@@ -59,7 +51,7 @@ const About = () => {
             <div className="dropdown-card">
               <div className="dropdown-header" onClick={() => toggleSection("auth")}>
                 🔐 Authentication & Authorization
-                <span>{openSection === "auth" ? "▲" : "▼"}</span>
+                <span className={`chevron ${openSection === "auth" ? "open" : ""}`}>▼</span>
               </div>
 
               {openSection === "auth" && (
@@ -76,7 +68,7 @@ const About = () => {
             <div className="dropdown-card">
               <div className="dropdown-header" onClick={() => toggleSection("ml")}>
                 🤖 Machine Learning Model
-                <span>{openSection === "ml" ? "▲" : "▼"}</span>
+                <span className={`chevron ${openSection === "ml" ? "open" : ""}`}>▼</span>
               </div>
 
               {openSection === "ml" && (
@@ -91,29 +83,26 @@ const About = () => {
             </div>
 
             <div className="dropdown-card">
-              <div className="dropdown-header" onClick={() => toggleSection("ml")}>
+              <div className="dropdown-header" onClick={() => toggleSection("mldetail")}>
                 🔍 How ML Detects Safe vs Fraud Transactions
-                <span>{openSection === "ml" ? "▲" : "▼"}</span>
+                <span className={`chevron ${openSection === "mldetail" ? "open" : ""}`}>▼</span>
               </div>
 
-              {openSection === "ml" && (
+              {openSection === "mldetail" && (
                 <div className="dropdown-content">
+                  <h2>How ML Detects Safe vs Fraud Transactions</h2>
+                  <hr />
+
                   <p>
-                    The model first learns your normal transaction behavior, such as usual
-                    payment amount, frequency, time, and location.
+                    The Machine Learning (ML) model analyzes multiple transaction details before predicting whether a UPI transaction is <strong>Safe</strong> or <strong>Fraud</strong>. It evaluates several risk factors, including:
                   </p>
+
+                  <p>✔ <strong>Wrong or Invalid UPI ID:</strong> If the receiver's UPI ID is invalid, malformed, or appears suspicious, the transaction risk increases.</p>
+
+                  <p>✔ <strong>High Payment Amount:</strong> Transactions involving unusually large amounts are considered higher risk, especially when compared to the user's normal payment behavior.</p>
+
                   <p>
-                    When a new transaction occurs, it is compared with your past patterns.
-                    Regular low-value payments are marked as safe because they match your
-                    usual activity.
-                  </p>
-                  <p>
-                    If a sudden high-value transaction or unusual activity appears, the
-                    system detects it as abnormal and flags it as potential fraud.
-                  </p>
-                  <p>
-                    Based on this comparison, the ML model instantly classifies the
-                    transaction as safe or fraudulent and can trigger alerts or blocks.
+                    Based on these and other features, the ML model calculates a fraud probability. If the overall risk score exceeds a predefined threshold, the transaction is classified as <strong>Fraud</strong>; otherwise, it is marked as <strong>Safe</strong>.
                   </p>
                 </div>
               )}
@@ -142,7 +131,6 @@ const About = () => {
               </p>
             </div>
 
-
           </div>
 
           {/* VIDEO TEXT */}
@@ -150,7 +138,6 @@ const About = () => {
             <h2>⚠️ Always verify before making any secure transaction</h2>
           </div>
 
-          {/* VIDEO (YOUR EXACT SIZE) */}
           {/* VIDEO */}
           <div className="about-video">
             <video
