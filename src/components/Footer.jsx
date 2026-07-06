@@ -7,7 +7,6 @@ const Footer = () => {
 
   return (
     <footer className="footer">
-      
       <div className="footer-links">
         <span onClick={() => navigate("/home")}>Home</span>
         <span onClick={() => navigate("/about")}>About</span>
@@ -17,9 +16,8 @@ const Footer = () => {
       <div className="footer-line"></div>
 
       <p className="footer-copy">
-        © 2026 @UPISAFE | All rights reserved.
+        © 2026 <span className="footer-brand">UPISAFE</span> | All rights reserved.
       </p>
-
     </footer>
   );
 };
