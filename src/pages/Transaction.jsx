@@ -5,8 +5,27 @@ import "./Transaction.css";
 import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const API = import.meta.env.VITE_API_BASE_URL;
+
+// ── Convert JS Date object -> dd-mm-yyyy string ──
+const toDDMMYYYY = (dateObj) => {
+  if (!dateObj) return "";
+  const dd = String(dateObj.getDate()).padStart(2, "0");
+  const mm = String(dateObj.getMonth() + 1).padStart(2, "0");
+  const yyyy = dateObj.getFullYear();
+  return `${dd}-${mm}-${yyyy}`;
+};
+
+// ── Convert JS Date object -> HH:mm (24hr) string ──
+const toHHmm = (dateObj) => {
+  if (!dateObj) return "";
+  const hh = String(dateObj.getHours()).padStart(2, "0");
+  const mm = String(dateObj.getMinutes()).padStart(2, "0");
+  return `${hh}:${mm}`;
+};
 
 const Transaction = () => {
   const navigate = useNavigate();
@@ -14,10 +33,11 @@ const Transaction = () => {
   const [form, setForm] = useState({
     upi_id: "",
     amount: "",
-    date: "",
-    time: "",
-    type: "",
+    type: "",   // "Requested" | "Debited"
   });
+
+  const [selectedDate, setSelectedDate] = useState(null); // JS Date object
+  const [selectedTime, setSelectedTime] = useState(null); // JS Date object
 
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -27,8 +47,37 @@ const Transaction = () => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
+  // ── Validate: Requested = today/future, Debited = today/past ──
+  const validateDateAgainstType = () => {
+    const selected = new Date(selectedDate);
+    selected.setHours(0, 0, 0, 0);
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    if (form.type === "Requested" && selected < today) {
+      toast.error("⚠️ 'Requested' payments must be for today or a future date.", {
+        position: "top-right",
+        autoClose: 3500,
+        theme: "colored",
+      });
+      return false;
+    }
+
+    if (form.type === "Debited" && selected > today) {
+      toast.error("⚠️ 'Debited' payments must be for today or a past date.", {
+        position: "top-right",
+        autoClose: 3500,
+        theme: "colored",
+      });
+      return false;
+    }
+
+    return true;
+  };
+
   const handleSubmit = async () => {
-    if (!form.upi_id || !form.amount || !form.date || !form.time || !form.type) {
+    if (!form.upi_id || !form.amount || !selectedDate || !selectedTime || !form.type) {
       toast.warning("Please fill in all fields ❗", {
         position: "top-right",
         autoClose: 3000,
@@ -36,6 +85,8 @@ const Transaction = () => {
       });
       return;
     }
+
+    if (!validateDateAgainstType()) return;
 
     setLoading(true);
 
@@ -50,12 +101,23 @@ const Transaction = () => {
         },
         body: JSON.stringify({
           ...form,
+          date: toDDMMYYYY(selectedDate), // sent as dd-mm-yyyy
+          time: toHHmm(selectedTime),     // sent as HH:mm (24hr)
           amount: Number(form.amount),
         }),
       });
 
       const data = await res.json();
-      if (!res.ok) throw new Error();
+
+      if (!res.ok) {
+        toast.error(data.error || "❌ Server error. Please try again.", {
+          position: "top-right",
+          autoClose: 3500,
+          theme: "colored",
+        });
+        setLoading(false);
+        return;
+      }
 
       setResult(data);
       setShowPopup(true);
@@ -71,7 +133,9 @@ const Transaction = () => {
   };
 
   const handleClear = () => {
-    setForm({ upi_id: "", amount: "", date: "", time: "", type: "" });
+    setForm({ upi_id: "", amount: "", type: "" });
+    setSelectedDate(null);
+    setSelectedTime(null);
     toast.info("Form cleared.", {
       position: "top-right",
       autoClose: 2000,
@@ -100,13 +164,8 @@ const Transaction = () => {
         <div className="transaction-main">
           <div className="transaction-card">
 
-            {/* ── TITLE (unchanged) ── */}
             <h2 className="card-title">Transaction Prediction</h2>
             <p className="card-subtitle">Check whether your transaction is Safe or Fraud</p>
-
-            {/* ══════════════════════════════════
-                INPUT SECTION  — redesigned
-            ══════════════════════════════════ */}
 
             {/* UPI ID */}
             <div className="field-group">
@@ -150,26 +209,44 @@ const Transaction = () => {
                 <label className="field-label">Date</label>
                 <div className="field-box">
                   <span className="field-prefix">📅</span>
-                  <input
+                  <DatePicker
+                    selected={selectedDate}
+                    onChange={(date) => setSelectedDate(date)}
+                    dateFormat="dd-MM-yyyy"
+                    placeholderText="dd-mm-yyyy"
                     className="field-input"
-                    name="date"
-                    type="date"
-                    value={form.date}
-                    onChange={handleChange}
+                    wrapperClassName="date-picker-wrapper"
+                    calendarClassName="custom-calendar"
+                    // ── Easy month/year navigation ──
+                    showMonthDropdown
+                    showYearDropdown
+                    dropdownMode="select"
+                    scrollableYearDropdown
+                    yearDropdownItemNumber={100}
+                    // ── Render in a portal so it's never clipped ──
+                    portalId="datepicker-portal"
                   />
                 </div>
               </div>
 
               <div className="field-group">
-                <label className="field-label">Time</label>
+                <label className="field-label">Time (24hr)</label>
                 <div className="field-box">
                   <span className="field-prefix">🕐</span>
-                  <input
+                  <DatePicker
+                    selected={selectedTime}
+                    onChange={(time) => setSelectedTime(time)}
+                    showTimeSelect
+                    showTimeSelectOnly
+                    timeIntervals={1}
+                    timeFormat="HH:mm"
+                    timeCaption="Time"
+                    dateFormat="HH:mm"
+                    placeholderText="HH:mm"
                     className="field-input"
-                    name="time"
-                    type="time"
-                    value={form.time}
-                    onChange={handleChange}
+                    wrapperClassName="date-picker-wrapper"
+                    calendarClassName="custom-calendar"
+                    portalId="datepicker-portal"
                   />
                 </div>
               </div>
@@ -187,15 +264,12 @@ const Transaction = () => {
                   onChange={handleChange}
                 >
                   <option value="">Select Type</option>
-                  <option value="PAYMENT">Payment</option>
-                  <option value="RECEIVED">Received</option>
+                  <option value="Requested">Request (Future Payment)</option>
+                  <option value="Debited">Debited (Already Deducted)</option>
                 </select>
               </div>
             </div>
 
-            {/* ══════════════════════════════════
-                BUTTON SECTION — redesigned
-            ══════════════════════════════════ */}
             <div className="btn-group">
               <button
                 className="check-btn"
@@ -225,7 +299,6 @@ const Transaction = () => {
         </div>
       </div>
 
-      {/* ===== POPUP — completely unchanged ===== */}
       {showPopup && result && (
         <div className="popup-overlay" onClick={() => setShowPopup(false)}>
           <div className="popup-box small" onClick={(e) => e.stopPropagation()}>
@@ -270,6 +343,11 @@ const Transaction = () => {
           </div>
         </div>
       )}
+
+      {/* Portal root — react-datepicker renders its calendar popup here,
+          so it always shows in full and is never cut off by the card's
+          overflow: hidden */}
+      <div id="datepicker-portal" />
     </div>
   );
 };
