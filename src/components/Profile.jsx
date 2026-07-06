@@ -27,17 +27,22 @@ const Profile = () => {
         <Sidebar />
         <div className="profile-main">
           <div className="profile-card-medium">
+
             {/* Header */}
             <div className="profile-header">
-              <div className="avatar-medium">{getInitials()}</div>
+              <div className="avatar-ring">
+                <div className="avatar-medium">{getInitials()}</div>
+              </div>
               <h2>{user.name}</h2>
               <p className="sub">User Profile</p>
             </div>
 
+            <div className="profile-divider"></div>
+
             {/* Info */}
             <div className="profile-info">
               <div className="info-box">
-                <span>Phone Number</span>
+                <span>📱 Phone Number</span>
                 <input
                   type="text"
                   value={user.phone}
@@ -47,7 +52,7 @@ const Profile = () => {
               </div>
 
               <div className="info-box">
-                <span>Email Address</span>
+                <span>✉️ Email Address</span>
                 <input
                   type="email"
                   value={user.email}
@@ -59,7 +64,7 @@ const Profile = () => {
 
             {/* Back button */}
             <button className="back-btn" onClick={() => navigate("/home")}>
-              Back to Dashboard
+              ← Back to Dashboard
             </button>
           </div>
         </div>
