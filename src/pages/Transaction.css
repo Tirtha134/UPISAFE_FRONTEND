@@ -53,29 +53,27 @@
 /* ==================================================
    CARD
 ================================================== */
-
 .transaction-card {
   width: 100%;
   max-width: 430px;
-
   padding: 24px;
-
   border-radius: 20px;
 
-  background: rgba(255,255,255,0.94);
+  background: linear-gradient(
+    135deg,
+    rgba(230, 245, 255, 0.95),
+    rgba(200, 235, 255, 0.9)
+  );
 
   backdrop-filter: blur(12px);
-
-  border: 1px solid rgba(255,255,255,0.4);
+  border: 1px solid rgba(255, 255, 255, 0.4);
 
   box-shadow:
-    0 10px 25px rgba(0,0,0,0.15);
+    0 10px 25px rgba(0, 0, 0, 0.15);
 
   display: flex;
   flex-direction: column;
-
   box-sizing: border-box;
-
   overflow: hidden;
 }
 
@@ -173,6 +171,17 @@
   color: #94a3b8;
 
   user-select: none;
+}
+
+/* ── Clock icon variant (SVG instead of emoji) — same box,
+     just makes sure the stroke-based icon is centered and
+     colored like the other prefix icons ── */
+.field-prefix-icon {
+  color: #64748b;
+}
+
+.field-prefix-icon svg {
+  display: block;
 }
 
 /* ===== INPUT ===== */
