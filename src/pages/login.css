@@ -10,8 +10,7 @@ html, body{
   width:100%;
 }
 
-/* TABLER ICONS
-@import url("https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css"); */
+@import url("https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css");
 
 /* BACKGROUND */
 .login-container{
