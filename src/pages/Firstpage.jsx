@@ -59,7 +59,7 @@ const FirstPage = () => {
           </div>
 
           <div className="fp-stat-box">
-            <h2>97.7%</h2>
+            <h2>98.2%</h2>
 
             <span className="fp-card-label">Accuracy</span>
 
