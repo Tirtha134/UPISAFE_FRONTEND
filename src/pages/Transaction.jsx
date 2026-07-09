@@ -27,17 +27,40 @@ const toHHmm = (dateObj) => {
   return `${hh}:${mm}`;
 };
 
+// ── Combine a "date" Date object + a "time" Date object
+//    into a single Date holding both the chosen day AND
+//    the chosen hour/minute (seconds/ms zeroed for clean comparison) ──
+const combineDateAndTime = (dateObj, timeObj) => {
+  if (!dateObj || !timeObj) return null;
+  const combined = new Date(dateObj);
+  combined.setHours(timeObj.getHours(), timeObj.getMinutes(), 0, 0);
+  return combined;
+};
+
+// ── "Now", rounded down to the current minute ──
+// The date/time pickers only let a user pick down to the minute,
+// so "now" must be rounded the same way before comparing, otherwise
+// picking the literal current minute would incorrectly fail either
+// the "Requested" (future) or "Debited" (past) check because of the
+// few stray seconds/ms between render and submit.
+const getRoundedNow = () => {
+  const now = new Date();
+  now.setSeconds(0, 0);
+  return now;
+};
+
 const Transaction = () => {
   const navigate = useNavigate();
 
   const [form, setForm] = useState({
     upi_id: "",
     amount: "",
-    type: "",   // "Requested" | "Debited"
+    type: "", // "Requested" | "Debited"
   });
 
-  const [selectedDate, setSelectedDate] = useState(null); // JS Date object
-  const [selectedTime, setSelectedTime] = useState(null); // JS Date object
+  // ── No default value — user must explicitly pick a date & time ──
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedTime, setSelectedTime] = useState(null);
 
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -47,16 +70,11 @@ const Transaction = () => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  // ── Validate: Requested = today/future, Debited = today/past ──
   const validateDateAgainstType = () => {
-    const selected = new Date(selectedDate);
-    selected.setHours(0, 0, 0, 0);
+    const pickedDateTime = combineDateAndTime(selectedDate, selectedTime);
 
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-
-    if (form.type === "Requested" && selected < today) {
-      toast.error("⚠️ 'Requested' payments must be for today or a future date.", {
+    if (!pickedDateTime) {
+      toast.error("⚠️ Please select a valid date and time.", {
         position: "top-right",
         autoClose: 3500,
         theme: "colored",
@@ -64,12 +82,32 @@ const Transaction = () => {
       return false;
     }
 
-    if (form.type === "Debited" && selected > today) {
-      toast.error("⚠️ 'Debited' payments must be for today or a past date.", {
-        position: "top-right",
-        autoClose: 3500,
-        theme: "colored",
-      });
+    // "Now" rounded to the same minute-level precision as the pickers
+    const now = getRoundedNow();
+
+    // Requested = must be NOW (current minute) or a FUTURE moment
+    if (form.type === "Requested" && pickedDateTime.getTime() < now.getTime()) {
+      toast.error(
+        "⚠️ 'Request' payments must be for a future date/time.",
+        {
+          position: "top-right",
+          autoClose: 3500,
+          theme: "colored",
+        }
+      );
+      return false;
+    }
+
+    // Debited = must be NOW (current minute) or a PAST moment
+    if (form.type === "Debited" && pickedDateTime.getTime() > now.getTime()) {
+      toast.error(
+        "⚠️ 'Debited' payments must be for a past date/time (already deducted).",
+        {
+          position: "top-right",
+          autoClose: 3500,
+          theme: "colored",
+        }
+      );
       return false;
     }
 
@@ -102,7 +140,7 @@ const Transaction = () => {
         body: JSON.stringify({
           ...form,
           date: toDDMMYYYY(selectedDate), // sent as dd-mm-yyyy
-          time: toHHmm(selectedTime),     // sent as HH:mm (24hr)
+          time: toHHmm(selectedTime), // sent as HH:mm (24hr)
           amount: Number(form.amount),
         }),
       });
@@ -134,6 +172,7 @@ const Transaction = () => {
 
   const handleClear = () => {
     setForm({ upi_id: "", amount: "", type: "" });
+    // Reset the date/time pickers back to empty (no prefilled value)
     setSelectedDate(null);
     setSelectedTime(null);
     toast.info("Form cleared.", {
@@ -163,7 +202,6 @@ const Transaction = () => {
 
         <div className="transaction-main">
           <div className="transaction-card">
-
             <h2 className="card-title">Transaction Prediction</h2>
             <p className="card-subtitle">Check whether your transaction is Safe or Fraud</p>
 
@@ -271,11 +309,7 @@ const Transaction = () => {
             </div>
 
             <div className="btn-group">
-              <button
-                className="check-btn"
-                onClick={handleSubmit}
-                disabled={loading}
-              >
+              <button className="check-btn" onClick={handleSubmit} disabled={loading}>
                 {loading ? (
                   <span className="btn-inner">
                     <span className="btn-spinner" />
@@ -294,7 +328,6 @@ const Transaction = () => {
             <button className="back-btn" onClick={() => navigate("/home")}>
               ← Back to Dashboard
             </button>
-
           </div>
         </div>
       </div>
@@ -302,7 +335,6 @@ const Transaction = () => {
       {showPopup && result && (
         <div className="popup-overlay" onClick={() => setShowPopup(false)}>
           <div className="popup-box small" onClick={(e) => e.stopPropagation()}>
-
             <div className={`video-circle ${result.Fraud_Result ? "circle-fraud" : "circle-safe"}`}>
               <video src="/search-money.mp4" autoPlay loop muted />
             </div>
@@ -339,7 +371,6 @@ const Transaction = () => {
             >
               Got it
             </button>
-
           </div>
         </div>
       )}
