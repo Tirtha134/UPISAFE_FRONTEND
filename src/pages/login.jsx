@@ -5,6 +5,7 @@ import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useAuth } from "../context/ContextProvider";
+import { FiEye, FiEyeOff } from "react-icons/fi";
 
 const API = import.meta.env.VITE_API_BASE_URL;
 
@@ -155,20 +156,14 @@ const Login = () => {
                 onChange={(e) => setPassword(e.target.value)}
               />
 
-              {/* SHOW / HIDE PASSWORD — always visible, never hidden */}
+              {/* SHOW / HIDE PASSWORD — react-icons eye toggle */}
               <button
                 type="button"
                 className="eye-toggle"
                 onClick={() => setShowPassword(!showPassword)}
                 aria-label={showPassword ? "Hide password" : "Show password"}
               >
-                <i
-                  className={
-                    showPassword
-                      ? "ti ti-eye-off"
-                      : "ti ti-eye"
-                  }
-                ></i>
+                {showPassword ? <FiEyeOff /> : <FiEye />}
               </button>
             </div>
 
