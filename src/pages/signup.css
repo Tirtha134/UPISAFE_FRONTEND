@@ -176,6 +176,27 @@ body{
   color:#777;
 }
 
+/* REMOVE BROWSER'S NATIVE/DEFAULT PASSWORD REVEAL ICON (no layout change) */
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear{
+  display:none;
+  width:0;
+  height:0;
+}
+
+input[type="password"]::-webkit-credentials-auto-fill-button,
+input[type="password"]::-webkit-strong-password-auto-fill-button{
+  display:none !important;
+  visibility:hidden;
+  pointer-events:none;
+  position:absolute;
+  right:0;
+}
+
+input[type="password"]::-webkit-textfield-decoration-container{
+  visibility:hidden;
+}
+
 /* ================================================= */
 /* PASSWORD ICON MOVE FULL RIGHT END */
 /* ================================================= */
