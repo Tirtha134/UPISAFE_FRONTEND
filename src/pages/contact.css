@@ -28,7 +28,7 @@ body {
 
 /* ===== PAGE ===== */
 .contact-page {
-  min-height: 100vh;
+  min-height: 40vh;
 
   display: flex;
   flex-direction: column;
@@ -104,9 +104,9 @@ body {
   padding: 10px;
 }
 
-/* ===== CARD ===== */
+/* ===== CARD (LIGHT SKY BLUE) ===== */
 .contact-card {
-  background: rgba(255, 255, 255, 0.95);
+  background: #e0f2fe;
 
   padding: 16px;
 
@@ -128,16 +128,19 @@ body {
   box-shadow: 0 18px 40px rgba(0, 0, 0, 0.25);
 }
 
-/* ===== IMAGE ===== */
+/* ===== IMAGE (ENLARGED) ===== */
 .contact-img {
-  width: 55px;
-  height: 55px;
+  width: 100px;
+  height: 100px;
 
   border-radius: 50%;
 
   object-fit: cover;
+  object-position: top;
 
   margin-bottom: 8px;
+
+  border: 3px solid rgba(30, 58, 138, 0.15);
 }
 
 /* ===== NAME ===== */
@@ -151,8 +154,13 @@ body {
   word-break: break-word;
 }
 
-/* ===== INFO ===== */
+/* ===== INFO ROW (WITH ICON) ===== */
 .info {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+
   font-size: 13px;
 
   color: #475569;
@@ -160,6 +168,14 @@ body {
   margin: 3px 0;
 
   word-break: break-word;
+}
+
+.info-icon {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+
+  color: #1e3a8a;
 }
 
 /* ===== FOOTER ===== */
@@ -191,6 +207,11 @@ footer {
   .contact-title {
     font-size: 30px;
   }
+
+  .contact-img {
+    width: 90px;
+    height: 90px;
+  }
 }
 
 /* ================= TABLET ================= */
@@ -210,8 +231,9 @@ footer {
     gap: 20px;
   }
 
-  .contact-card {
-    padding: 15px;
+  .contact-img {
+    width: 80px;
+    height: 80px;
   }
 }
 
@@ -248,13 +270,9 @@ footer {
     padding: 0;
   }
 
-  .contact-card {
-    padding: 14px;
-  }
-
   .contact-img {
-    width: 50px;
-    height: 50px;
+    width: 70px;
+    height: 70px;
   }
 
   .contact-card h3 {
@@ -263,6 +281,11 @@ footer {
 
   .info {
     font-size: 12px;
+  }
+
+  .info-icon {
+    width: 12px;
+    height: 12px;
   }
 }
 
@@ -285,13 +308,9 @@ footer {
     font-size: 13px;
   }
 
-  .contact-card {
-    padding: 12px;
-  }
-
   .contact-img {
-    width: 45px;
-    height: 45px;
+    width: 60px;
+    height: 60px;
   }
 
   .contact-card h3 {
@@ -300,5 +319,10 @@ footer {
 
   .info {
     font-size: 11px;
+  }
+
+  .info-icon {
+    width: 11px;
+    height: 11px;
   }
 }
