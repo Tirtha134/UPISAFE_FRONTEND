@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { FiEye, FiEyeOff } from "react-icons/fi";
 
 const API = import.meta.env.VITE_API_BASE_URL;
 
@@ -118,10 +119,7 @@ const ForgotPassword = () => {
                 onClick={() => setShowPassword((p) => !p)}
                 aria-label={showPassword ? "Hide password" : "Show password"}
               >
-                <i
-                  className={`ti ${showPassword ? "ti-eye-off" : "ti-eye"}`}
-                  aria-hidden="true"
-                ></i>
+                {showPassword ? <FiEyeOff /> : <FiEye />}
               </button>
             </div>
 
