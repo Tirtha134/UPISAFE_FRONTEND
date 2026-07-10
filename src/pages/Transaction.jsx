@@ -124,6 +124,16 @@ const Transaction = () => {
       return;
     }
 
+    // ── UPI ID must contain "@" ──
+    if (!form.upi_id.includes("@")) {
+      toast.error("⚠️ Please enter a valid UPI ID (must contain '@').", {
+        position: "top-right",
+        autoClose: 3500,
+        theme: "colored",
+      });
+      return;
+    }
+
     if (!validateDateAgainstType()) return;
 
     setLoading(true);
